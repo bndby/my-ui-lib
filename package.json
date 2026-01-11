@@ -1,0 +1,55 @@
+{
+  "name": "my-ui-lib",
+  "version": "1.0.0",
+  "description": "Коллекция React компонентов, хуков и утилит для копирования в ваш проект",
+  "type": "module",
+  "bin": {
+    "my-ui": "./bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.cli.json",
+    "dev": "tsc -p tsconfig.cli.json --watch",
+    "prepare": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "bin",
+    "src",
+    "registry",
+    "registry.json",
+    "tsconfig.cli.json"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/prompts": "^2.4.9",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "prompts": "^2.4.2"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "hooks",
+    "utils",
+    "cli",
+    "copy-paste",
+    "ui"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}

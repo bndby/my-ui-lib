@@ -1,0 +1,104 @@
+{
+  "$schema": "./registry.schema.json",
+  "name": "my-ui-lib",
+  "version": "1.0.0",
+  "items": {
+    "components": [
+      {
+        "name": "button",
+        "description": "Универсальный компонент кнопки с вариантами стилей и размеров",
+        "category": "ui",
+        "files": ["ui/button.tsx", "ui/button.module.css"],
+        "dependencies": []
+      },
+      {
+        "name": "card",
+        "description": "Компонент карточки с заголовком, описанием и контентом",
+        "category": "ui",
+        "files": ["ui/card.tsx", "ui/card.module.css"],
+        "dependencies": []
+      },
+      {
+        "name": "input",
+        "description": "Стилизованный компонент текстового ввода",
+        "category": "ui",
+        "files": ["ui/input.tsx", "ui/input.module.css"],
+        "dependencies": []
+      },
+      {
+        "name": "modal",
+        "description": "Модальное окно с overlay и анимацией",
+        "category": "ui",
+        "files": ["ui/modal.tsx", "ui/modal.module.css"],
+        "dependencies": ["use-click-outside"]
+      }
+    ],
+    "hooks": [
+      {
+        "name": "use-local-storage",
+        "description": "Хук для работы с localStorage с автоматической синхронизацией",
+        "category": "hooks",
+        "files": ["hooks/use-local-storage.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "use-debounce",
+        "description": "Хук для debounce значений и callback-функций",
+        "category": "hooks",
+        "files": ["hooks/use-debounce.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "use-media-query",
+        "description": "Хук для отслеживания media queries (адаптивность)",
+        "category": "hooks",
+        "files": ["hooks/use-media-query.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "use-click-outside",
+        "description": "Хук для отслеживания кликов вне элемента",
+        "category": "hooks",
+        "files": ["hooks/use-click-outside.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "use-toggle",
+        "description": "Хук для управления boolean состоянием",
+        "category": "hooks",
+        "files": ["hooks/use-toggle.ts"],
+        "dependencies": []
+      }
+    ],
+    "utils": [
+      {
+        "name": "cn",
+        "description": "Утилита для объединения CSS классов",
+        "category": "lib",
+        "files": ["lib/cn.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "format",
+        "description": "Функции форматирования: даты, числа, валюта, телефоны",
+        "category": "lib",
+        "files": ["lib/format.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "validators",
+        "description": "Функции валидации: email, телефон, URL, ИНН, СНИЛС и др.",
+        "category": "lib",
+        "files": ["lib/validators.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "helpers",
+        "description": "Общие вспомогательные функции: sleep, generateId, debounce, throttle",
+        "category": "lib",
+        "files": ["lib/helpers.ts"],
+        "dependencies": []
+      }
+    ]
+  }
+}
