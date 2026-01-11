@@ -7,10 +7,10 @@
     "my-ui": "./bin/cli.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.cli.json",
-    "dev": "tsc -p tsconfig.cli.json --watch",
+    "build": "npx tsc -p tsconfig.cli.json",
+    "dev": "npx tsc -p tsconfig.cli.json --watch",
     "prepare": "npm run build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npx tsc --noEmit"
   },
   "files": [
     "bin",
