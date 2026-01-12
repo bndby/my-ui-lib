@@ -3,6 +3,50 @@
   "name": "my-ui-lib",
   "version": "1.0.0",
   "items": {
+    "test-configs": [
+      {
+        "name": "test/vitest-config",
+        "description": "Конфигурация Vitest для тестирования",
+        "category": "test",
+        "files": ["vitest.config.example.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "test/jest-config",
+        "description": "Конфигурация Jest для тестирования",
+        "category": "test",
+        "files": ["jest.config.example.js"],
+        "dependencies": []
+      },
+      {
+        "name": "test/rstest-config",
+        "description": "Конфигурация Rstest для тестирования",
+        "category": "test",
+        "files": ["rstest.config.example.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "test/setup",
+        "description": "Setup файл для тестового окружения",
+        "category": "test",
+        "files": ["test-setup.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "test/globals",
+        "description": "TypeScript типы для глобальных переменных тестов",
+        "category": "test",
+        "files": ["test-globals.d.ts"],
+        "dependencies": []
+      },
+      {
+        "name": "test/css-modules",
+        "description": "TypeScript типы для CSS модулей",
+        "category": "test",
+        "files": ["css-modules.d.ts"],
+        "dependencies": []
+      }
+    ],
     "components": [
       {
         "name": "ui/button",

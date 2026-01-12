@@ -1,523 +1,225 @@
-# my-ui-lib
+# My UI Library
 
-Коллекция React компонентов, хуков и утилит, которые копируются прямо в ваш проект.
+Библиотека переиспользуемых React компонентов, хуков и утилит с встроенными тестами.
 
-> ⚡ Код принадлежит вам — никаких внешних зависимостей, полный контроль над кодом!
-
-## Установка
-
-### Из npm (после публикации)
+## 🚀 Установка
 
 ```bash
-npm install -g my-ui-lib
+npm install my-ui-lib
+```
+
+## 📖 Использование CLI
+
+### Инициализация
+
+Настройте пути для компонентов, хуков и утилит в вашем проекте:
+
+```bash
+npx my-ui init
+```
+
+CLI предложит настроить:
+- Путь для компонентов (по умолчанию: `src/components`)
+- Путь для хуков (по умолчанию: `src/hooks`)
+- Путь для утилит (по умолчанию: `src/lib`)
+- Путь для тестовых конфигов (по умолчанию: `.`)
+
+После инициализации CLI предложит настроить тестовое окружение.
+
+### 🧪 Настройка тестирования
+
+#### Автоматическая настройка
+
+При добавлении компонентов с тестами CLI автоматически предложит установить тестовые конфигурации:
+
+```bash
+npx my-ui add ui/button
+# CLI обнаружит тесты и предложит настроить окружение
+```
+
+#### Ручная настройка
+
+Настроить тестовое окружение в любой момент:
+
+```bash
+npx my-ui setup-tests
+```
+
+Опции:
+```bash
+# Выбрать конкретный фреймворк
+npx my-ui setup-tests --framework vitest
+npx my-ui setup-tests --framework jest
+npx my-ui setup-tests --framework rstest
+
+# Установить все три фреймворка
+npx my-ui setup-tests --framework all
+
+# Без подтверждения
+npx my-ui setup-tests -f vitest -y
+```
+
+#### Что устанавливается
+
+CLI автоматически копирует:
+- ✅ `test-setup.ts` — настройка окружения для тестов
+- ✅ `test-globals.d.ts` — TypeScript типы для глобальных переменных
+- ✅ `css-modules.d.ts` — типы для CSS модулей
+- ✅ `vitest.config.ts` / `jest.config.js` / `rstest.config.ts` — конфигурация выбранного фреймворка
+
+#### Поддерживаемые фреймворки
+
+| Фреймворк | Установка | Описание |
+|-----------|-----------|----------|
+| **Vitest** | `npm install -D vitest @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom` | Рекомендуется. Быстрый и современный |
+| **Jest** | `npm install -D jest @types/jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom ts-jest` | Зрелое и надежное решение |
+| **Rstest** | `npm install -D @rstest/core @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom` | Новый от Rspack |
+
+### Список элементов
+
+Посмотреть все доступные компоненты, хуки и утилиты:
+
+```bash
+npx my-ui list
 # или
-npx my-ui add button
+npx my-ui ls
 ```
 
-### Из Git репозитория (без публикации в npm)
+Фильтрация:
+```bash
+npx my-ui list --components  # Только компоненты
+npx my-ui list --hooks       # Только хуки
+npx my-ui list --utils       # Только утилиты
+```
+
+### Добавление элементов
+
+#### Интерактивный режим
 
 ```bash
-# Напрямую через npx + GitHub
-npx github:YOUR_USERNAME/test-lib add button
-
-# Или установить из git
-npm install -g git+https://github.com/YOUR_USERNAME/test-lib.git
-my-ui add button
+npx my-ui add
 ```
 
-### Локально (для разработки)
+#### Указать элементы явно
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/test-lib.git
-cd test-lib
-npm install && npm run build
-npm link
-
-# Теперь в любом проекте:
-my-ui add button
+npx my-ui add ui/button ui/card
+npx my-ui add hooks/use-toggle lib/cn
 ```
 
-## Быстрый старт
-
-### 1. Инициализация (опционально)
+#### Добавить все элементы
 
 ```bash
-my-ui init
+npx my-ui add --all
 ```
 
-Команда создаст файл `my-ui.config.json` с настройками путей:
+#### Без подтверждения
+
+```bash
+npx my-ui add ui/button -y
+```
+
+### Информация об элементе
+
+```bash
+npx my-ui info ui/button
+npx my-ui info hooks/use-local-storage
+```
+
+## 📦 Доступные элементы
+
+### Компоненты (UI)
+
+- `ui/button` — Универсальная кнопка с вариантами стилей
+- `ui/card` — Карточка с заголовком и контентом
+- `ui/input` — Стилизованный текстовый ввод
+- `ui/modal` — Модальное окно с overlay
+
+### Хуки
+
+- `hooks/use-local-storage` — Работа с localStorage
+- `hooks/use-debounce` — Debounce значений и callback
+- `hooks/use-media-query` — Отслеживание media queries
+- `hooks/use-click-outside` — Клики вне элемента
+- `hooks/use-toggle` — Boolean состояние
+
+### Утилиты
+
+- `lib/cn` — Объединение CSS классов
+- `lib/format` — Форматирование: даты, числа, валюта
+- `lib/validators` — Валидация: email, телефон, ИНН
+- `lib/helpers` — Общие функции: sleep, debounce, throttle
+
+## 🧪 Тестирование
+
+Все компоненты, хуки и утилиты поставляются с готовыми тестами, совместимыми с Jest, Vitest и Rstest.
+
+### Особенности
+
+- ✅ Универсальные тесты без привязки к фреймворку
+- ✅ Используют глобальные переменные (`describe`, `it`, `expect`)
+- ✅ Автоматическая настройка через CLI
+- ✅ Полное покрытие всех функций
+
+### Быстрый старт
+
+```bash
+# 1. Установите компонент с тестами
+npx my-ui add ui/button
+
+# 2. CLI предложит настроить тестовое окружение
+# Выберите фреймворк: Vitest / Jest / Rstest
+
+# 3. Установите зависимости
+npm install -D vitest @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+
+# 4. Запустите тесты
+npm run test
+```
+
+Подробнее о тестировании: [registry/README.tests.md](./registry/README.tests.md)
+
+## 🤝 Зависимости
+
+CLI автоматически разрешает и устанавливает зависимости:
+
+```bash
+# Модальное окно зависит от hooks/use-click-outside
+npx my-ui add ui/modal
+# CLI автоматически добавит hooks/use-click-outside
+```
+
+## 📝 Конфигурация
+
+Файл `my-ui.config.json` создается автоматически при `npx my-ui init`:
 
 ```json
 {
   "components": "src/components",
   "hooks": "src/hooks",
-  "utils": "src/lib"
+  "utils": "src/lib",
+  "tests": "."
 }
 ```
 
-### 2. Просмотр доступных элементов
+## 🛠️ Разработка
 
 ```bash
-my-ui list
-```
+# Клонировать репозиторий
+git clone <repo-url>
+cd my-ui-lib
 
-### 3. Добавление в проект
-
-```bash
-# Добавить конкретные элементы
-my-ui add button card input
-
-# Добавить с зависимостями автоматически
-my-ui add modal  # автоматически добавит use-click-outside
-
-# Интерактивный выбор
-my-ui add
-
-# Добавить всё
-my-ui add --all
-
-# Без подтверждения
-my-ui add button -y
-```
-
-### 4. Информация об элементе
-
-```bash
-my-ui info button
-```
-
-## Содержимое
-
-### UI Компоненты
-
-| Компонент | Описание |
-|-----------|----------|
-| `button` | Кнопка с вариантами (primary, secondary, outline, ghost, danger) и размерами |
-| `card` | Карточка с header, content и footer |
-| `input` | Поле ввода с лейблом, ошибками и иконками |
-| `modal` | Модальное окно с overlay и анимацией |
-
-### Хуки
-
-| Хук | Описание |
-|-----|----------|
-| `use-local-storage` | Работа с localStorage + синхронизация между вкладками |
-| `use-debounce` | Debounce значений и callback-функций |
-| `use-media-query` | Media queries + готовые брейкпоинты (isMobile, isDesktop) |
-| `use-click-outside` | Отслеживание кликов вне элемента |
-| `use-toggle` | Управление boolean состоянием |
-
-### Утилиты
-
-| Утилита | Описание |
-|---------|----------|
-| `cn` | Объединение CSS классов с условиями |
-| `format` | Форматирование: даты, числа, валюта, телефоны, pluralize |
-| `validators` | Валидация: email, телефон, ИНН, СНИЛС, пароли |
-| `helpers` | Общие функции: debounce, throttle, groupBy, chunk, pick, omit |
-
-## Пример использования
-
-### Button
-
-```tsx
-import { Button } from "@/components/button"
-
-<Button variant="primary" size="md">
-  Отправить
-</Button>
-
-<Button variant="danger" isLoading>
-  Удаление...
-</Button>
-
-<Button variant="outline" leftIcon={<PlusIcon />}>
-  Добавить
-</Button>
-```
-
-### Modal
-
-```tsx
-import { Modal, ModalFooter } from "@/components/modal"
-import { Button } from "@/components/button"
-
-const [isOpen, setIsOpen] = useState(false)
-
-<Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Подтверждение">
-  <p>Вы уверены, что хотите продолжить?</p>
-  <ModalFooter>
-    <Button variant="outline" onClick={() => setIsOpen(false)}>
-      Отмена
-    </Button>
-    <Button variant="primary" onClick={handleConfirm}>
-      Подтвердить
-    </Button>
-  </ModalFooter>
-</Modal>
-```
-
-### useLocalStorage
-
-```tsx
-import { useLocalStorage } from "@/hooks/use-local-storage"
-
-const [theme, setTheme, removeTheme] = useLocalStorage("theme", "light")
-
-// Значение автоматически синхронизируется между вкладками
-setTheme("dark")
-```
-
-### format
-
-```ts
-import { formatCurrency, formatDate, pluralize, formatPhone } from "@/lib/format"
-
-formatCurrency(1234.5) // "1 234,50 ₽"
-formatDate(new Date(), "long") // "воскресенье, 15 января 2024 г."
-pluralize(5, ["товар", "товара", "товаров"]) // "товаров"
-formatPhone("79991234567") // "+7 (999) 123-45-67"
-```
-
-## Стилизация
-
-Компоненты используют CSS Modules — стили изолированы и не конфликтуют с вашими.
-
-### Кастомизация
-
-После копирования в проект вы можете свободно менять:
-- CSS переменные в `.module.css` файлах
-- Структуру и логику в `.tsx` файлах
-- Добавлять новые варианты и размеры
-
-### Тёмная тема
-
-Пример добавления тёмной темы в `button.module.css`:
-
-```css
-@media (prefers-color-scheme: dark) {
-  .primary {
-    background: #60a5fa;
-  }
-
-  .secondary {
-    background: #374151;
-    color: #f3f4f6;
-  }
-}
-```
-
-## Для разработчиков библиотеки
-
-### Структура проекта
-
-```
-my-ui-lib/
-├── src/cli/           # CLI утилита
-│   └── cli.ts
-├── registry/          # Исходный код компонентов
-│   ├── ui/            # React компоненты + CSS
-│   ├── hooks/         # React хуки
-│   └── lib/           # Утилитарные функции
-├── bin/               # Скомпилированный CLI (генерируется)
-├── registry.json      # Манифест всех элементов
-├── package.json
-└── tsconfig.cli.json
-```
-
-### Сборка
-
-```bash
+# Установить зависимости
 npm install
+
+# Собрать CLI
 npm run build
-```
 
-### Локальное тестирование
-
-```bash
-# Линк для глобального использования
+# Тестирование CLI локально
 npm link
-
-# В другом проекте
-my-ui add button
+npx my-ui --help
 ```
 
-### Добавление новых элементов
+## 📄 Лицензия
 
-Библиотека поддерживает три типа элементов:
-
-- **Компоненты** (`ui/`) — React компоненты с CSS
-- **Хуки** (`hooks/`) — React хуки
-- **Утилиты** (`lib/`) — вспомогательные функции
-
----
-
-#### Добавление UI компонента
-
-**Шаг 1.** Создайте файлы компонента:
-
-```
-registry/ui/
-├── avatar.tsx
-└── avatar.module.css
-```
-
-**Шаг 2.** Напишите компонент (`registry/ui/avatar.tsx`):
-
-```tsx
-import * as React from "react"
-import styles from "./avatar.module.css"
-import { cn } from "@/lib/cn"
-
-export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  src?: string
-  alt?: string
-  size?: "sm" | "md" | "lg"
-  fallback?: string
-}
-
-export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
-  ({ className, src, alt, size = "md", fallback, ...props }, ref) => {
-    const [hasError, setHasError] = React.useState(false)
-
-    return (
-      <div ref={ref} className={cn(styles.avatar, styles[size], className)} {...props}>
-        {src && !hasError ? (
-          <img
-            src={src}
-            alt={alt}
-            className={styles.image}
-            onError={() => setHasError(true)}
-          />
-        ) : (
-          <span className={styles.fallback}>
-            {fallback || alt?.charAt(0)?.toUpperCase() || "?"}
-          </span>
-        )}
-      </div>
-    )
-  }
-)
-
-Avatar.displayName = "Avatar"
-```
-
-**Шаг 3.** Добавьте стили (`registry/ui/avatar.module.css`):
-
-```css
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #e5e7eb;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.sm { width: 32px; height: 32px; font-size: 12px; }
-.md { width: 40px; height: 40px; font-size: 14px; }
-.lg { width: 56px; height: 56px; font-size: 18px; }
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.fallback {
-  color: #6b7280;
-  font-weight: 500;
-}
-```
-
-**Шаг 4.** Зарегистрируйте в `registry.json`:
-
-```json
-{
-  "name": "avatar",
-  "description": "Компонент аватара с fallback",
-  "category": "ui",
-  "files": ["ui/avatar.tsx", "ui/avatar.module.css"],
-  "dependencies": ["cn"]
-}
-```
-
-Добавьте в массив `items.components`.
-
----
-
-#### Добавление хука
-
-**Шаг 1.** Создайте файл хука (`registry/hooks/use-copy-to-clipboard.ts`):
-
-```ts
-import { useState, useCallback } from "react"
-
-export function useCopyToClipboard(): [
-  boolean,
-  (text: string) => Promise<boolean>
-] {
-  const [copied, setCopied] = useState(false)
-
-  const copy = useCallback(async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-      return true
-    } catch {
-      setCopied(false)
-      return false
-    }
-  }, [])
-
-  return [copied, copy]
-}
-```
-
-**Шаг 2.** Зарегистрируйте в `registry.json`:
-
-```json
-{
-  "name": "use-copy-to-clipboard",
-  "description": "Хук для копирования текста в буфер обмена",
-  "category": "hooks",
-  "files": ["hooks/use-copy-to-clipboard.ts"],
-  "dependencies": []
-}
-```
-
-Добавьте в массив `items.hooks`.
-
----
-
-#### Добавление утилиты
-
-**Шаг 1.** Создайте файл (`registry/lib/array-utils.ts`):
-
-```ts
-/**
- * Возвращает случайный элемент массива
- */
-export function sample<T>(array: T[]): T | undefined {
-  return array[Math.floor(Math.random() * array.length)]
-}
-
-/**
- * Возвращает последний элемент массива
- */
-export function last<T>(array: T[]): T | undefined {
-  return array[array.length - 1]
-}
-
-/**
- * Возвращает первый элемент массива
- */
-export function first<T>(array: T[]): T | undefined {
-  return array[0]
-}
-```
-
-**Шаг 2.** Зарегистрируйте в `registry.json`:
-
-```json
-{
-  "name": "array-utils",
-  "description": "Утилиты для работы с массивами: sample, first, last",
-  "category": "lib",
-  "files": ["lib/array-utils.ts"],
-  "dependencies": []
-}
-```
-
-Добавьте в массив `items.utils`.
-
----
-
-#### Зависимости между элементами
-
-Если ваш элемент использует другие элементы библиотеки, укажите их в `dependencies`:
-
-```json
-{
-  "name": "dropdown",
-  "description": "Выпадающее меню",
-  "category": "ui",
-  "files": ["ui/dropdown.tsx", "ui/dropdown.module.css"],
-  "dependencies": ["cn", "use-click-outside"]
-}
-```
-
-При добавлении `dropdown` CLI автоматически добавит `cn` и `use-click-outside`.
-
----
-
-#### Проверка и тестирование
-
-```bash
-# Пересобрать CLI
-npm run build
-
-# Проверить, что элемент появился в списке
-node bin/cli.js list
-
-# Посмотреть информацию
-node bin/cli.js info avatar
-
-# Протестировать добавление в тестовый проект
-mkdir /tmp/test-project && cd /tmp/test-project
-node /path/to/test-lib/bin/cli.js add avatar
-```
-
----
-
-#### Структура registry.json
-
-```json
-{
-  "$schema": "./registry.schema.json",
-  "name": "my-ui-lib",
-  "version": "1.0.0",
-  "items": {
-    "components": [
-      {
-        "name": "button",           // Уникальное имя (используется в CLI)
-        "description": "...",       // Описание (показывается в list)
-        "category": "ui",           // Категория: ui | hooks | lib
-        "files": ["ui/button.tsx"], // Файлы для копирования
-        "dependencies": ["cn"]      // Зависимости из этой же библиотеки
-      }
-    ],
-    "hooks": [ ... ],
-    "utils": [ ... ]
-  }
-}
-```
-
-| Поле | Описание |
-|------|----------|
-| `name` | Уникальный идентификатор (kebab-case) |
-| `description` | Краткое описание на русском |
-| `category` | `ui` — компоненты, `hooks` — хуки, `lib` — утилиты |
-| `files` | Массив путей относительно `registry/` |
-| `dependencies` | Массив имён других элементов библиотеки |
-
-## Публикация в npm
-
-```bash
-npm login
-npm publish
-```
-
-После публикации пользователи смогут:
-
-```bash
-npx my-ui add button
-# или
-npm install -g my-ui-lib && my-ui add button
-```
-
-## Лицензия
-
-MIT — используйте как хотите!
+MIT
