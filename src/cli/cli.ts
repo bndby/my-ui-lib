@@ -10,9 +10,14 @@ import { fileURLToPath } from "url"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Путь к registry (относительно bin/)
+// Пути относительно bin/
+const PACKAGE_JSON_PATH = join(__dirname, "..", "package.json")
 const REGISTRY_PATH = join(__dirname, "..", "registry.json")
 const COMPONENTS_PATH = join(__dirname, "..", "registry")
+
+// Версия из package.json
+const packageJson = JSON.parse(readFileSync(PACKAGE_JSON_PATH, "utf-8"))
+const VERSION = packageJson.version as string
 
 interface RegistryItem {
   name: string
@@ -152,7 +157,7 @@ const program = new Command()
 program
   .name("my-ui")
   .description("CLI для копирования компонентов, хуков и утилит в ваш проект")
-  .version("1.0.0")
+  .version(VERSION)
 
 // Команда: init
 program
