@@ -82,35 +82,35 @@
         "name": "hooks/use-local-storage",
         "description": "Хук для работы с localStorage с автоматической синхронизацией",
         "category": "hooks",
-        "files": ["hooks/use-local-storage/use-local-storage.ts", "hooks/use-local-storage/use-local-storage.test.ts"],
+        "files": ["hooks/use-local-storage/use-local-storage.ts", "hooks/use-local-storage/use-local-storage.test.ts", "hooks/use-local-storage/index.ts"],
         "dependencies": []
       },
       {
         "name": "hooks/use-debounce",
         "description": "Хук для debounce значений и callback-функций",
         "category": "hooks",
-        "files": ["hooks/use-debounce/use-debounce.ts", "hooks/use-debounce/use-debounce.test.ts"],
+        "files": ["hooks/use-debounce/use-debounce.ts", "hooks/use-debounce/use-debounce.test.ts", "hooks/use-debounce/index.ts"],
         "dependencies": []
       },
       {
         "name": "hooks/use-media-query",
         "description": "Хук для отслеживания media queries (адаптивность)",
         "category": "hooks",
-        "files": ["hooks/use-media-query/use-media-query.ts", "hooks/use-media-query/use-media-query.test.ts"],
+        "files": ["hooks/use-media-query/use-media-query.ts", "hooks/use-media-query/use-media-query.test.ts", "hooks/use-media-query/index.ts"],
         "dependencies": []
       },
       {
         "name": "hooks/use-click-outside",
         "description": "Хук для отслеживания кликов вне элемента",
         "category": "hooks",
-        "files": ["hooks/use-click-outside/use-click-outside.ts", "hooks/use-click-outside/use-click-outside.test.ts"],
+        "files": ["hooks/use-click-outside/use-click-outside.ts", "hooks/use-click-outside/use-click-outside.test.ts", "hooks/use-click-outside/index.ts"],
         "dependencies": []
       },
       {
         "name": "hooks/use-toggle",
         "description": "Хук для управления boolean состоянием",
         "category": "hooks",
-        "files": ["hooks/use-toggle/use-toggle.ts", "hooks/use-toggle/use-toggle.test.ts"],
+        "files": ["hooks/use-toggle/use-toggle.ts", "hooks/use-toggle/use-toggle.test.ts", "hooks/use-toggle/index.ts"],
         "dependencies": []
       }
     ],
@@ -119,28 +119,28 @@
         "name": "lib/cn",
         "description": "Утилита для объединения CSS классов",
         "category": "lib",
-        "files": ["lib/cn/cn.ts", "lib/cn/cn.test.ts"],
+        "files": ["lib/cn/cn.ts", "lib/cn/cn.test.ts", "lib/cn/index.ts"],
         "dependencies": []
       },
       {
         "name": "lib/format",
         "description": "Функции форматирования: даты, числа, валюта, телефоны",
         "category": "lib",
-        "files": ["lib/format/format.ts", "lib/format/format.test.ts"],
+        "files": ["lib/format/format.ts", "lib/format/format.test.ts", "lib/format/index.ts"],
         "dependencies": []
       },
       {
         "name": "lib/validators",
         "description": "Функции валидации: email, телефон, URL, ИНН, СНИЛС и др.",
         "category": "lib",
-        "files": ["lib/validators/validators.ts", "lib/validators/validators.test.ts"],
+        "files": ["lib/validators/validators.ts", "lib/validators/validators.test.ts", "lib/validators/index.ts"],
         "dependencies": []
       },
       {
         "name": "lib/helpers",
         "description": "Общие вспомогательные функции: sleep, generateId, debounce, throttle",
         "category": "lib",
-        "files": ["lib/helpers/helpers.ts", "lib/helpers/helpers.test.ts"],
+        "files": ["lib/helpers/helpers.ts", "lib/helpers/helpers.test.ts", "lib/helpers/index.ts"],
         "dependencies": []
       }
     ]
