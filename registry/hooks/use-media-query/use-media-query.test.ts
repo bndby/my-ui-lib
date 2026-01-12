@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest"
 import { renderHook, act } from "@testing-library/react"
 import { useMediaQuery, useBreakpoints, usePrefersDarkMode, usePrefersReducedMotion } from "./use-media-query"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 // Мок для matchMedia
 const createMatchMediaMock = (matches: boolean) => {

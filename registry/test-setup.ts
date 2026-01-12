@@ -2,14 +2,14 @@
  * Setup файл для тестов
  * 
  * Этот файл настраивает окружение для тестирования компонентов и хуков
- * Совместим с Vitest и Jest
+ * Совместим с Jest, Vitest и Rstest (используются глобальные переменные)
  */
 
-import { expect, afterEach } from "vitest"
 import { cleanup } from "@testing-library/react"
 import * as matchers from "@testing-library/jest-dom/matchers"
 
 // Добавляем custom matchers из @testing-library/jest-dom
+// expect доступен глобально во всех трех фреймворках
 expect.extend(matchers)
 
 // Автоматическая очистка после каждого теста

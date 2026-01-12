@@ -1,4 +1,3 @@
-import { describe, it, expect } from "vitest"
 import {
   formatCurrency,
   formatNumber,
@@ -13,6 +12,8 @@ import {
   capitalize,
   formatPercent,
 } from "./format"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("formatCurrency", () => {
   it("форматирует рубли", () => {

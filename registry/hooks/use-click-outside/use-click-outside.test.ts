@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from "vitest"
 import { renderHook } from "@testing-library/react"
 import { act } from "react"
 import { useClickOutside, useClickOutsideMultiple } from "./use-click-outside"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("useClickOutside", () => {
   it("вызывает handler при клике вне элемента", () => {

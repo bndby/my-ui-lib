@@ -1,48 +1,121 @@
 # Тестирование компонентов, хуков и утилит
 
-Все компоненты, хуки и утилиты поставляются с готовыми тестами, которые можно использовать в вашем проекте.
+Все компоненты, хуки и утилиты поставляются с готовыми тестами, которые **полностью совместимы с Jest, Vitest и Rstest**.
+
+## Универсальность тестов
+
+Тесты написаны без привязки к конкретному фреймворку:
+- ✅ Используют глобальные переменные (`describe`, `it`, `expect`, `vi`/`jest`)
+- ✅ Не требуют импортов из тестовых фреймворков
+- ✅ Работают со всеми тремя фреймворками без изменений
+- ✅ Одинаковый API для моков (`vi` в Vitest = `jest` в Jest/Rstest)
+- ✅ Rstest имеет Jest-совместимый API из коробки
 
 ## Установка зависимостей
 
-### Для Vitest (рекомендуется)
+### Для Vitest
 
 ```bash
-npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+npm install -D vitest @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
 ```
 
 ### Для Jest
 
 ```bash
-npm install -D jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom ts-jest
+npm install -D jest @types/jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom ts-jest
 ```
+
+### Для Rstest (новый фреймворк от Rspack)
+
+```bash
+npm install -D @rstest/core @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+```
+
+## Совместимость с тремя фреймворками
+
+Тесты написаны универсально и работают со всеми тремя фреймворками:
+
+| Функция | Vitest | Jest | Rstest | В тестах |
+|---------|--------|------|--------|----------|
+| `describe` | Глобально | Глобально | Глобально | `describe(...)` |
+| `it / test` | Глобально | Глобально | Глобально | `it(...)` или `test(...)` |
+| `expect` | Глобально | Глобально | Глобально | `expect(...)` |
+| `beforeEach` | Глобально | Глобально | Глобально | `beforeEach(...)` |
+| `afterEach` | Глобально | Глобально | Глобально | `afterEach(...)` |
+| Моки | `vi.fn()` | `jest.fn()` | `jest.fn()` | `vi.fn()` или `jest.fn()` |
+| Таймеры | `vi.useFakeTimers()` | `jest.useFakeTimers()` | `jest.useFakeTimers()` | `vi` или `jest` |
+
+**Важно:** 
+- В **Vitest** используйте `vi` для моков
+- В **Jest** используйте `jest` для моков
+- В **Rstest** используйте `jest` для моков (Jest-совместимый API)
+- Все доступны глобально!
 
 ## Настройка
 
 ### Vitest
 
 1. Скопируйте `vitest.config.example.ts` как `vitest.config.ts` в корень проекта
-2. Скопируйте `test-setup.ts` в директорию с компонентами
-3. Настройте пути в конфигурации согласно вашей структуре
+2. Скопируйте `test-setup.ts` в директорию с компонентами  
+3. Скопируйте `test-globals.d.ts` для поддержки типов
+4. Настройте пути в конфигурации согласно вашей структуре
+5. **Важно:** Убедитесь что `globals: true` включено в конфиге
+
+```typescript
+// vitest.config.ts
+export default defineConfig({
+  test: {
+    globals: true, // ← Обязательно!
+    environment: "jsdom",
+    setupFiles: ["./test-setup.ts"],
+  }
+})
+```
 
 ### Jest
 
 1. Скопируйте `jest.config.example.js` как `jest.config.js` в корень проекта
 2. Скопируйте `test-setup.ts` в директорию с компонентами
-3. Настройте пути в конфигурации согласно вашей структуре
+3. Скопируйте `test-globals.d.ts` для поддержки типов
+4. Настройте пути в конфигурации согласно вашей структуре
+5. Jest использует глобальные переменные по умолчанию
+
+```javascript
+// jest.config.js
+module.exports = {
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/test-setup.ts"],
+  // Глобальные переменные доступны автоматически
+}
+```
+
+### Rstest (новый фреймворк от Rspack)
+
+1. Скопируйте `rstest.config.example.ts` как `rstest.config.ts` в корень проекта
+2. Скопируйте `test-setup.ts` в директорию с компонентами
+3. Скопируйте `test-globals.d.ts` для поддержки типов
+4. Настройте пути в конфигурации согласно вашей структуре
+5. **Важно:** Rstest использует Jest-совместимый API с глобальными переменными
+
+```typescript
+// rstest.config.ts
+import { defineConfig } from '@rstest/core'
+
+export default defineConfig({
+  testEnvironment: "jsdom",
+  setupFiles: ["./test-setup.ts"],
+  globals: true, // ← Обязательно!
+})
+```
 
 ## Запуск тестов
 
 ### Vitest
 
 ```bash
-# Запустить все тесты
-npm run test
-
-# Запустить в watch режиме
-npm run test:watch
-
-# Сгенерировать отчет о покрытии
-npm run test:coverage
+npm run test          # Запустить все тесты
+npm run test:watch    # Watch режим
+npm run test:coverage # Покрытие кода
 ```
 
 Добавьте в `package.json`:
@@ -60,14 +133,9 @@ npm run test:coverage
 ### Jest
 
 ```bash
-# Запустить все тесты
-npm run test
-
-# Запустить в watch режиме
-npm run test:watch
-
-# Сгенерировать отчет о покрытии
-npm run test:coverage
+npm run test          # Запустить все тесты
+npm run test:watch    # Watch режим
+npm run test:coverage # Покрытие кода
 ```
 
 Добавьте в `package.json`:
@@ -78,6 +146,26 @@ npm run test:coverage
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
+  }
+}
+```
+
+### Rstest
+
+```bash
+npm run test          # Запустить все тесты
+npm run test:watch    # Watch режим
+npm run test:coverage # Покрытие кода
+```
+
+Добавьте в `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "rstest",
+    "test:watch": "rstest --watch",
+    "test:coverage": "rstest --coverage"
   }
 }
 ```
@@ -141,8 +229,14 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { Button } from "./Button"
 
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
+
 test("кнопка вызывает onClick при клике", async () => {
-  const handleClick = vi.fn() // или jest.fn() для Jest
+  // В Vitest используйте vi.fn()
+  // В Jest используйте jest.fn()
+  // В Rstest используйте jest.fn() (Jest-совместимый API)
+  // Все доступны глобально!
+  const handleClick = vi.fn() // или jest.fn()
   const user = userEvent.setup()
   
   render(<Button onClick={handleClick}>Click me</Button>)
@@ -158,6 +252,8 @@ test("кнопка вызывает onClick при клике", async () => {
 import { renderHook, act } from "@testing-library/react"
 import { useToggle } from "./use-toggle"
 
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
+
 test("переключает значение", () => {
   const { result } = renderHook(() => useToggle(false))
 
@@ -168,6 +264,23 @@ test("переключает значение", () => {
 
   expect(result.current[0]).toBe(true)
 })
+
+// С fake таймерами (во всех трех фреймворках)
+describe("useDebounce", () => {
+  beforeEach(() => {
+    // Vitest: vi.useFakeTimers()
+    // Jest/Rstest: jest.useFakeTimers()
+    vi.useFakeTimers() // или jest.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks() // или jest.restoreAllMocks()
+  })
+
+  it("задерживает обновление", () => {
+    // тест...
+  })
+})
 ```
 
 ### Тестирование утилит
@@ -175,10 +288,41 @@ test("переключает значение", () => {
 ```typescript
 import { cn } from "./cn"
 
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
+
 test("объединяет классы", () => {
   expect(cn("class1", "class2")).toBe("class1 class2")
 })
+
+describe("cn", () => {
+  it("фильтрует falsy значения", () => {
+    expect(cn("class1", false, "class2", null)).toBe("class1 class2")
+  })
+})
 ```
+
+## Выбор фреймворка
+
+### Vitest
+✅ **Рекомендуется для новых проектов**
+- Очень быстрый (использует Vite)
+- Отличная поддержка TypeScript и ESM
+- Watch mode из коробки
+- Совместимость с Jest API
+
+### Jest
+✅ **Зрелое решение**
+- Проверенный временем
+- Огромная экосистема
+- Широкая поддержка сообщества
+- Работает везде
+
+### Rstest
+✅ **Новое решение от Rspack**
+- Jest-совместимый API
+- Интеграция с Rspack
+- Нативная поддержка TypeScript/ESM
+- Современный подход
 
 ## Советы по тестированию
 
@@ -187,6 +331,7 @@ test("объединяет классы", () => {
 3. **Используйте роли ARIA**: `getByRole` предпочтительнее `getByTestId`
 4. **Мокайте внешние зависимости**: API вызовы, таймеры и т.д.
 5. **Тестируйте граничные случаи**: Пустые значения, большие числа и т.д.
+6. **Глобальные переменные**: Все фреймворки поддерживают `globals: true` - используйте это!
 
 ## Troubleshooting
 

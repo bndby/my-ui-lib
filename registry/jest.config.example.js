@@ -12,6 +12,9 @@ module.exports = {
   // Setup файл с глобальными настройками
   setupFilesAfterEnv: ["<rootDir>/test-setup.ts"],
 
+  // Jest использует глобальные переменные по умолчанию
+  // describe, it, expect, beforeEach, afterEach доступны без импортов
+
   // Трансформация файлов
   transform: {
     "^.+\\.(ts|tsx)$": ["ts-jest", {

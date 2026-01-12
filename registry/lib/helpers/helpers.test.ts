@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import {
   sleep,
   generateId,
@@ -18,6 +17,8 @@ import {
   isEmpty,
   isObject,
 } from "./helpers"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("sleep", () => {
   it("задерживает выполнение на указанное время", async () => {

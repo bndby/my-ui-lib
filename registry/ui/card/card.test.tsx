@@ -1,4 +1,3 @@
-import { describe, it, expect } from "vitest"
 import { render, screen } from "@testing-library/react"
 import {
   Card,
@@ -8,6 +7,8 @@ import {
   CardContent,
   CardFooter,
 } from "./card"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("Card", () => {
   it("рендерится с контентом", () => {

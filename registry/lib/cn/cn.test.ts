@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest"
 import { cn } from "./cn"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("cn", () => {
   it("объединяет строки классов", () => {

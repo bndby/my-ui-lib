@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest"
 import { renderHook, act } from "@testing-library/react"
 import { useLocalStorage } from "./use-local-storage"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("useLocalStorage", () => {
   beforeEach(() => {

@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { act } from "react"
 import { useDebounce, useDebouncedCallback } from "./use-debounce"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("useDebounce", () => {
   beforeEach(() => {

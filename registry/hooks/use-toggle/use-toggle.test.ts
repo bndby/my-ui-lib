@@ -1,6 +1,7 @@
-import { describe, it, expect } from "vitest"
 import { renderHook, act } from "@testing-library/react"
 import { useToggle } from "./use-toggle"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("useToggle", () => {
   it("возвращает начальное значение false по умолчанию", () => {

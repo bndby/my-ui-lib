@@ -1,4 +1,3 @@
-import { describe, it, expect } from "vitest"
 import {
   isEmail,
   isPhone,
@@ -14,6 +13,8 @@ import {
   isDate,
   isIPAddress,
 } from "./validators"
+
+// Тесты совместимы с Jest, Vitest и Rstest (используют глобальные переменные)
 
 describe("isEmail", () => {
   it("валидирует правильные email адреса", () => {
