@@ -1,6 +1,6 @@
 import * as React from "react"
 import styles from "./input.module.css"
-import { cn } from "@/lib/cn"
+import { cn } from "../../lib/cn"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** Лейбл над полем ввода */

@@ -23,6 +23,12 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
   enabled: boolean = true
 ): RefObject<T | null> {
   const ref = useRef<T>(null)
+  const handlerRef = useRef(handler)
+
+  // Обновляем ref с handler при каждом рендере
+  useEffect(() => {
+    handlerRef.current = handler
+  }, [handler])
 
   useEffect(() => {
     if (!enabled) {
@@ -34,7 +40,7 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
 
       // Проверяем, что клик был вне элемента
       if (ref.current && !ref.current.contains(target)) {
-        handler(event)
+        handlerRef.current(event)
       }
     }
 
@@ -46,7 +52,7 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
       document.removeEventListener("mousedown", handleClickOutside)
       document.removeEventListener("touchstart", handleClickOutside)
     }
-  }, [handler, enabled])
+  }, [enabled])
 
   return ref
 }
@@ -82,6 +88,15 @@ export function useClickOutsideMultiple<T extends HTMLElement = HTMLElement>(
   handler: (event: MouseEvent | TouchEvent) => void,
   enabled: boolean = true
 ): void {
+  const handlerRef = useRef(handler)
+  const refsRef = useRef(refs)
+
+  // Обновляем refs при каждом рендере
+  useEffect(() => {
+    handlerRef.current = handler
+    refsRef.current = refs
+  }, [handler, refs])
+
   useEffect(() => {
     if (!enabled) {
       return
@@ -91,12 +106,12 @@ export function useClickOutsideMultiple<T extends HTMLElement = HTMLElement>(
       const target = event.target as Node
 
       // Проверяем, что клик был вне всех элементов
-      const isOutside = refs.every(
+      const isOutside = refsRef.current.every(
         (ref) => ref.current && !ref.current.contains(target)
       )
 
       if (isOutside) {
-        handler(event)
+        handlerRef.current(event)
       }
     }
 
@@ -107,5 +122,5 @@ export function useClickOutsideMultiple<T extends HTMLElement = HTMLElement>(
       document.removeEventListener("mousedown", handleClickOutside)
       document.removeEventListener("touchstart", handleClickOutside)
     }
-  }, [refs, handler, enabled])
+  }, [enabled])
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 
 /**
  * Хук для debounce значения
@@ -45,32 +45,39 @@ export function useDebounce<T>(value: T, delay: number = 500): T {
  *
  * <input onChange={(e) => debouncedSearch(e.target.value)} />
  */
-export function useDebouncedCallback<T extends (...args: Parameters<T>) => void>(
+export function useDebouncedCallback<T extends (...args: any[]) => void>(
   callback: T,
   delay: number = 500
 ): T {
-  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const callbackRef = useRef(callback)
 
-  const debouncedCallback = ((...args: Parameters<T>) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
-
-    const newTimeoutId = setTimeout(() => {
-      callback(...args)
-    }, delay)
-
-    setTimeoutId(newTimeoutId)
-  }) as T
+  // Обновляем callback ref при каждом рендере
+  useEffect(() => {
+    callbackRef.current = callback
+  }, [callback])
 
   // Очистка при размонтировании
   useEffect(() => {
     return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
       }
     }
-  }, [timeoutId])
+  }, [])
+
+  const debouncedCallback = useCallback(
+    ((...args: any[]) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        callbackRef.current(...args)
+      }, delay)
+    }) as T,
+    [delay]
+  )
 
   return debouncedCallback
 }

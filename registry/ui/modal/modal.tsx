@@ -1,8 +1,8 @@
 import * as React from "react"
 import { createPortal } from "react-dom"
 import styles from "./modal.module.css"
-import { cn } from "@/lib/cn"
-import { useClickOutside } from "@/hooks/use-click-outside"
+import { cn } from "../../lib/cn"
+import { useClickOutside } from "../../hooks/use-click-outside"
 
 export interface ModalProps {
   /** Открыто ли модальное окно */
@@ -64,16 +64,30 @@ export function Modal({
 
   // Блокировка скролла body
   React.useEffect(() => {
-    if (isOpen) {
-      const originalOverflow = document.body.style.overflow
-      document.body.style.overflow = "hidden"
-      return () => {
-        document.body.style.overflow = originalOverflow
-      }
+    if (!isOpen || typeof document === "undefined") return
+
+    const originalOverflow = document.body.style.overflow
+    const originalPaddingRight = document.body.style.paddingRight
+    
+    // Получаем ширину скроллбара
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    
+    // Блокируем скролл и компенсируем ширину скроллбара
+    document.body.style.overflow = "hidden"
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    }
+    
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.body.style.paddingRight = originalPaddingRight
     }
   }, [isOpen])
 
   if (!isOpen) return null
+
+  // Проверка для SSR
+  if (typeof document === "undefined") return null
 
   const modal = (
     <div className={styles.overlay} role="dialog" aria-modal="true">

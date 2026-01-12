@@ -44,17 +44,21 @@ export function useLocalStorage<T>(
       }
 
       try {
-        const valueToStore = value instanceof Function ? value(storedValue) : value
-        setStoredValue(valueToStore)
-        window.localStorage.setItem(key, JSON.stringify(valueToStore))
-        
-        // Отправляем кастомное событие для синхронизации между хуками
-        window.dispatchEvent(new StorageEvent("storage", { key }))
+        // Используем функциональное обновление для получения актуального значения
+        setStoredValue((prevValue) => {
+          const valueToStore = value instanceof Function ? value(prevValue) : value
+          window.localStorage.setItem(key, JSON.stringify(valueToStore))
+          
+          // Отправляем кастомное событие для синхронизации между хуками
+          window.dispatchEvent(new StorageEvent("storage", { key }))
+          
+          return valueToStore
+        })
       } catch (error) {
         console.warn(`Ошибка записи в localStorage ключа "${key}":`, error)
       }
     },
-    [key, storedValue]
+    [key]
   )
 
   // Удаляем значение из localStorage
