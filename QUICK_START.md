@@ -167,7 +167,7 @@ npm test
 
 - [README.md](./README.md) — Полная документация
 - [EXAMPLES.md](./EXAMPLES.md) — Детальные примеры
-- [registry/README.tests.md](./registry/README.tests.md) — Документация по тестам
+- [templates/README.tests.md](./templates/README.tests.md) — Документация по тестам
 
 ## 💡 Советы
 

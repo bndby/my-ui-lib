@@ -32,7 +32,7 @@ npm run build-storybook
 Все stories находятся рядом с соответствующими компонентами:
 
 ```
-registry/
+templates/
   ui/
     button/
       button.tsx

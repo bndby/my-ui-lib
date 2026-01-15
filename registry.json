@@ -9,42 +9,48 @@
         "description": "Конфигурация Vitest для тестирования",
         "category": "test",
         "files": ["vitest.config.example.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "test/jest-config",
         "description": "Конфигурация Jest для тестирования",
         "category": "test",
         "files": ["jest.config.example.js"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "test/rstest-config",
         "description": "Конфигурация Rstest для тестирования",
         "category": "test",
         "files": ["rstest.config.example.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "test/setup",
         "description": "Setup файл для тестового окружения",
         "category": "test",
         "files": ["test-setup.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "test/globals",
         "description": "TypeScript типы для глобальных переменных тестов",
         "category": "test",
         "files": ["test-globals.d.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "test/css-modules",
         "description": "TypeScript типы для CSS модулей",
         "category": "test",
         "files": ["css-modules.d.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       }
     ],
     "components": [
@@ -53,28 +59,32 @@
         "description": "Универсальный компонент кнопки с вариантами стилей и размеров",
         "category": "ui",
         "files": ["ui/button/button.tsx", "ui/button/button.module.css", "ui/button/button.test.tsx"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "ui/card",
         "description": "Компонент карточки с заголовком, описанием и контентом",
         "category": "ui",
         "files": ["ui/card/card.tsx", "ui/card/card.module.css", "ui/card/card.test.tsx"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "ui/input",
         "description": "Стилизованный компонент текстового ввода",
         "category": "ui",
         "files": ["ui/input/input.tsx", "ui/input/input.module.css", "ui/input/input.test.tsx"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "ui/modal",
         "description": "Модальное окно с overlay и анимацией",
         "category": "ui",
         "files": ["ui/modal/modal.tsx", "ui/modal/modal.module.css", "ui/modal/modal.test.tsx"],
-        "dependencies": ["hooks/use-click-outside"]
+        "dependencies": ["hooks/use-click-outside"],
+        "meta": { "since": "1.0.0" }
       }
     ],
     "hooks": [
@@ -83,35 +93,40 @@
         "description": "Хук для работы с localStorage с автоматической синхронизацией",
         "category": "hooks",
         "files": ["hooks/use-local-storage/use-local-storage.ts", "hooks/use-local-storage/use-local-storage.test.ts", "hooks/use-local-storage/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "hooks/use-debounce",
         "description": "Хук для debounce значений и callback-функций",
         "category": "hooks",
         "files": ["hooks/use-debounce/use-debounce.ts", "hooks/use-debounce/use-debounce.test.ts", "hooks/use-debounce/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "hooks/use-media-query",
         "description": "Хук для отслеживания media queries (адаптивность)",
         "category": "hooks",
         "files": ["hooks/use-media-query/use-media-query.ts", "hooks/use-media-query/use-media-query.test.ts", "hooks/use-media-query/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "hooks/use-click-outside",
         "description": "Хук для отслеживания кликов вне элемента",
         "category": "hooks",
         "files": ["hooks/use-click-outside/use-click-outside.ts", "hooks/use-click-outside/use-click-outside.test.ts", "hooks/use-click-outside/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "hooks/use-toggle",
         "description": "Хук для управления boolean состоянием",
         "category": "hooks",
         "files": ["hooks/use-toggle/use-toggle.ts", "hooks/use-toggle/use-toggle.test.ts", "hooks/use-toggle/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       }
     ],
     "utils": [
@@ -120,28 +135,32 @@
         "description": "Утилита для объединения CSS классов",
         "category": "lib",
         "files": ["lib/cn/cn.ts", "lib/cn/cn.test.ts", "lib/cn/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "lib/format",
         "description": "Функции форматирования: даты, числа, валюта, телефоны",
         "category": "lib",
         "files": ["lib/format/format.ts", "lib/format/format.test.ts", "lib/format/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "lib/validators",
         "description": "Функции валидации: email, телефон, URL, ИНН, СНИЛС и др.",
         "category": "lib",
         "files": ["lib/validators/validators.ts", "lib/validators/validators.test.ts", "lib/validators/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       },
       {
         "name": "lib/helpers",
         "description": "Общие вспомогательные функции: sleep, generateId, debounce, throttle",
         "category": "lib",
         "files": ["lib/helpers/helpers.ts", "lib/helpers/helpers.test.ts", "lib/helpers/index.ts"],
-        "dependencies": []
+        "dependencies": [],
+        "meta": { "since": "1.0.0" }
       }
     ]
   }

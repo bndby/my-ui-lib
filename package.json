@@ -6,19 +6,24 @@
   "bin": {
     "my-ui": "./bin/cli.js"
   },
+  "exports": {
+    ".": "./bin/cli.js"
+  },
   "scripts": {
     "build": "npx -p typescript tsc -p tsconfig.cli.json",
     "dev": "npx tsc -p tsconfig.cli.json --watch",
     "prepare": "npm run build",
     "typecheck": "npx tsc --noEmit",
+    "test:cli": "npm run build && node --test bin/__tests__/**/*.test.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "files": [
     "bin",
     "src",
-    "registry",
+    "templates",
     "registry.json",
+    "registry.schema.json",
     "tsconfig.cli.json"
   ],
   "devDependencies": {

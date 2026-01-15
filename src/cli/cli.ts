@@ -3,295 +3,18 @@
 import { Command } from "commander"
 import chalk from "chalk"
 import prompts from "prompts"
-import { readFileSync, writeFileSync, existsSync, mkdirSync, cpSync } from "fs"
-import { join, dirname, resolve } from "path"
-import { fileURLToPath } from "url"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-// Пути относительно bin/
-const PACKAGE_JSON_PATH = join(__dirname, "..", "package.json")
-const REGISTRY_PATH = join(__dirname, "..", "registry.json")
-const COMPONENTS_PATH = join(__dirname, "..", "registry")
+import { readFileSync } from "fs"
+import { DEFAULT_CONFIG, loadConfig, saveConfig } from "./config"
+import { copyFiles } from "./copy"
+import { resolveDependencies } from "./deps"
+import { PACKAGE_JSON_PATH } from "./paths"
+import { findItem, getAllItems, loadRegistry } from "./registry"
+import { checkTestSetup, offerTestSetup } from "./test-setup"
+import { RegistryItem } from "./types"
 
 // Версия из package.json
 const packageJson = JSON.parse(readFileSync(PACKAGE_JSON_PATH, "utf-8"))
 const VERSION = packageJson.version as string
-
-interface RegistryItem {
-  name: string
-  description: string
-  category: string
-  files: string[]
-  dependencies: string[]
-}
-
-interface Registry {
-  name: string
-  version: string
-  items: {
-    "test-configs": RegistryItem[]
-    components: RegistryItem[]
-    hooks: RegistryItem[]
-    utils: RegistryItem[]
-  }
-}
-
-interface Config {
-  components: string
-  hooks: string
-  utils: string
-  tests: string
-}
-
-const DEFAULT_CONFIG: Config = {
-  components: "src/components",
-  hooks: "src/hooks",
-  utils: "src/lib",
-  tests: ".",
-}
-
-function loadRegistry(): Registry {
-  try {
-    const content = readFileSync(REGISTRY_PATH, "utf-8")
-    return JSON.parse(content)
-  } catch (error) {
-    console.error(chalk.red("Ошибка: не удалось загрузить registry.json"))
-    process.exit(1)
-  }
-}
-
-function loadConfig(): Config {
-  const configPath = join(process.cwd(), "my-ui.config.json")
-  if (existsSync(configPath)) {
-    try {
-      const content = readFileSync(configPath, "utf-8")
-      return { ...DEFAULT_CONFIG, ...JSON.parse(content) }
-    } catch {
-      return DEFAULT_CONFIG
-    }
-  }
-  return DEFAULT_CONFIG
-}
-
-function saveConfig(config: Config): void {
-  const configPath = join(process.cwd(), "my-ui.config.json")
-  writeFileSync(configPath, JSON.stringify(config, null, 2))
-}
-
-function getAllItems(registry: Registry, includeTestConfigs: boolean = false): RegistryItem[] {
-  const items = [
-    ...registry.items.components,
-    ...registry.items.hooks,
-    ...registry.items.utils,
-  ]
-  
-  if (includeTestConfigs) {
-    items.push(...registry.items["test-configs"])
-  }
-  
-  return items
-}
-
-function findItem(registry: Registry, name: string): RegistryItem | undefined {
-  return getAllItems(registry).find((item) => item.name === name)
-}
-
-function getTargetDir(config: Config, category: string): string {
-  switch (category) {
-    case "ui":
-      return config.components
-    case "hooks":
-      return config.hooks
-    case "lib":
-      return config.utils
-    case "test":
-      return config.tests
-    default:
-      return config.components
-  }
-}
-
-function copyFiles(item: RegistryItem, config: Config, overwrite: boolean = false): void {
-  const targetDir = join(process.cwd(), getTargetDir(config, item.category))
-
-  // Создаём директорию, если не существует
-  if (!existsSync(targetDir)) {
-    mkdirSync(targetDir, { recursive: true })
-  }
-
-  for (const file of item.files) {
-    const sourcePath = join(COMPONENTS_PATH, file)
-    let fileName = file.split("/").pop()!
-    
-    // Для тестовых конфигов убираем .example из имени
-    if (item.category === "test" && fileName.includes(".example.")) {
-      fileName = fileName.replace(".example.", ".")
-    }
-    
-    const targetPath = join(targetDir, fileName)
-
-    if (!existsSync(sourcePath)) {
-      console.warn(chalk.yellow(`  ⚠ Файл не найден: ${file}`))
-      continue
-    }
-
-    if (existsSync(targetPath) && !overwrite) {
-      console.log(chalk.yellow(`  ⚠ Файл уже существует: ${fileName}`))
-    } else {
-      cpSync(sourcePath, targetPath)
-      console.log(chalk.green(`  ✓ ${fileName}`))
-    }
-  }
-}
-
-// Проверка установлены ли тестовые конфиги
-function checkTestSetup(): {
-  hasAnyConfig: boolean
-  hasVitest: boolean
-  hasJest: boolean
-  hasRstest: boolean
-  hasSetup: boolean
-  hasGlobals: boolean
-} {
-  const cwd = process.cwd()
-  
-  return {
-    hasVitest: existsSync(join(cwd, "vitest.config.ts")) || existsSync(join(cwd, "vitest.config.js")),
-    hasJest: existsSync(join(cwd, "jest.config.ts")) || existsSync(join(cwd, "jest.config.js")),
-    hasRstest: existsSync(join(cwd, "rstest.config.ts")) || existsSync(join(cwd, "rstest.config.js")),
-    hasSetup: existsSync(join(cwd, "test-setup.ts")) || existsSync(join(cwd, "test-setup.js")),
-    hasGlobals: existsSync(join(cwd, "test-globals.d.ts")),
-    get hasAnyConfig() {
-      return this.hasVitest || this.hasJest || this.hasRstest
-    }
-  }
-}
-
-// Предложить установить тестовую конфигурацию
-async function offerTestSetup(registry: Registry, config: Config): Promise<void> {
-  const setup = checkTestSetup()
-  
-  if (setup.hasAnyConfig && setup.hasSetup && setup.hasGlobals) {
-    return // Все уже установлено
-  }
-  
-  console.log(chalk.cyan("\n🧪 Обнаружены тесты, но тестовое окружение не настроено\n"))
-  
-  const response = await prompts({
-    type: "confirm",
-    name: "value",
-    message: "Установить конфигурацию для тестирования?",
-    initial: true,
-  })
-  
-  if (!response.value) {
-    console.log(chalk.yellow("Пропущено. Используйте 'my-ui setup-tests' для настройки позже.\n"))
-    return
-  }
-  
-  // Выбор тестового фреймворка
-  const frameworkChoice = await prompts({
-    type: "select",
-    name: "framework",
-    message: "Выберите тестовый фреймворк:",
-    choices: [
-      { title: "Vitest (рекомендуется) — быстрый и современный", value: "vitest" },
-      { title: "Jest — зрелое и надежное решение", value: "jest" },
-      { title: "Rstest — новый от Rspack", value: "rstest" },
-      { title: "Установить все три (можно выбрать потом)", value: "all" },
-    ],
-    initial: 0,
-  })
-  
-  if (!frameworkChoice.framework) return
-  
-  console.log(chalk.cyan("\n📋 Установка тестовой конфигурации:\n"))
-  
-  const itemsToInstall: RegistryItem[] = []
-  
-  // Общие файлы (всегда нужны)
-  if (!setup.hasSetup) {
-    const setupItem = findItem(registry, "test/setup")
-    if (setupItem) itemsToInstall.push(setupItem)
-  }
-  
-  if (!setup.hasGlobals) {
-    const globalsItem = findItem(registry, "test/globals")
-    if (globalsItem) itemsToInstall.push(globalsItem)
-  }
-  
-  const cssModulesItem = findItem(registry, "test/css-modules")
-  if (cssModulesItem) itemsToInstall.push(cssModulesItem)
-  
-  // Конфиги фреймворков
-  if (frameworkChoice.framework === "all") {
-    if (!setup.hasVitest) {
-      const vitestItem = findItem(registry, "test/vitest-config")
-      if (vitestItem) itemsToInstall.push(vitestItem)
-    }
-    if (!setup.hasJest) {
-      const jestItem = findItem(registry, "test/jest-config")
-      if (jestItem) itemsToInstall.push(jestItem)
-    }
-    if (!setup.hasRstest) {
-      const rstestItem = findItem(registry, "test/rstest-config")
-      if (rstestItem) itemsToInstall.push(rstestItem)
-    }
-  } else {
-    const configName = `test/${frameworkChoice.framework}-config`
-    const configItem = findItem(registry, configName)
-    if (configItem) itemsToInstall.push(configItem)
-  }
-  
-  // Копируем файлы
-  for (const item of itemsToInstall) {
-    console.log(chalk.white(`${item.name}:`))
-    copyFiles(item, config)
-  }
-  
-  console.log(chalk.green("\n✓ Тестовое окружение настроено!"))
-  
-  // Инструкции по установке зависимостей
-  console.log(chalk.cyan("\n📦 Установите необходимые зависимости:\n"))
-  
-  if (frameworkChoice.framework === "vitest" || frameworkChoice.framework === "all") {
-    console.log(chalk.white("Для Vitest:"))
-    console.log(chalk.gray("npm install -D vitest @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom\n"))
-  }
-  
-  if (frameworkChoice.framework === "jest" || frameworkChoice.framework === "all") {
-    console.log(chalk.white("Для Jest:"))
-    console.log(chalk.gray("npm install -D jest @types/jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom ts-jest\n"))
-  }
-  
-  if (frameworkChoice.framework === "rstest" || frameworkChoice.framework === "all") {
-    console.log(chalk.white("Для Rstest:"))
-    console.log(chalk.gray("npm install -D @rstest/core @vitejs/plugin-react @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom\n"))
-  }
-}
-
-function resolveDependencies(
-  registry: Registry,
-  item: RegistryItem,
-  resolved: Set<string> = new Set()
-): RegistryItem[] {
-  const deps: RegistryItem[] = []
-
-  for (const depName of item.dependencies) {
-    if (resolved.has(depName)) continue
-    resolved.add(depName)
-
-    const dep = findItem(registry, depName)
-    if (dep) {
-      deps.push(...resolveDependencies(registry, dep, resolved))
-      deps.push(dep)
-    }
-  }
-
-  return deps
-}
 
 // ========== КОМАНДЫ ==========
 
@@ -536,6 +259,13 @@ program
     console.log(chalk.gray(item.description))
     console.log()
     console.log(chalk.cyan("Категория:"), item.category)
+    console.log(chalk.cyan("С версии:"), item.meta.since)
+    if (item.meta.deprecated) {
+      console.log(chalk.yellow("Deprecated:"), item.meta.deprecated)
+    }
+    if (item.meta.breaking) {
+      console.log(chalk.red("Breaking:"), item.meta.breaking)
+    }
     console.log(chalk.cyan("Файлы:"))
     for (const file of item.files) {
       console.log(`  • ${file}`)

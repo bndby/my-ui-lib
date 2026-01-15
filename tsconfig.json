@@ -16,9 +16,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./registry/*"]
+      "@/*": ["./templates/*"]
     }
   },
-  "include": ["registry/**/*"],
+  "include": ["templates/**/*"],
   "exclude": ["node_modules", "bin", "src/cli"]
 }

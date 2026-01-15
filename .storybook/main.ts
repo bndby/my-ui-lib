@@ -4,8 +4,8 @@ import path from "path";
 
 const config: StorybookConfig = {
   stories: [
-    "../registry/**/*.mdx",
-    "../registry/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../templates/**/*.mdx",
+    "../templates/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [
     "@storybook/addon-links",
@@ -32,7 +32,7 @@ const config: StorybookConfig = {
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
         alias: {
-          "@": path.resolve(__dirname, "../registry"),
+          "@": path.resolve(__dirname, "../templates"),
         },
       },
       css: {
